@@ -1,0 +1,46 @@
+{
+    "deploy": [
+        {
+            "file": "BokerManager.sol",
+            "contracts": [
+                "BokerManager"
+            ]
+        },
+        {
+            "file": "BokerLog.sol",
+            "contracts": [
+                "BokerLog"
+            ]
+        },
+        {
+            "file": "BokerLogData.sol",
+            "contracts": [
+                "BokerLogData"
+            ]
+        },
+        {
+            "file": "BokerNode.sol",
+            "contracts": [
+                "BokerNode"
+            ]
+        },
+        {
+            "file": "BokerNodeData.sol",
+            "contracts": [
+                "BokerNodeData"
+            ]
+        },
+		{
+            "file": "BokerInterface.sol",
+            "contracts": [
+                "BokerInterface"
+            ]
+        },
+		{
+            "file": "BokerInterfaceBase.sol",
+            "contracts": [
+                "BokerInterfaceBase"
+            ]
+        }
+    ]
+}
