@@ -8,16 +8,6 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
 ![Image text](https://github.com/Tinachain/Tina/blob/master/image/Architecture.png)
 
 
-### 关于我们（About us）
-
-#### Tinachain Co-Founder
-> * WeChat: [区什么块什么链啊](Blockchain_fxh7622) 	
-> * Twitter: [区什么块什么链啊](https://twitter.com/chain_fxh7622) 
-> * Twitter: [后青春期的诗](https://twitter.com/chain_stayreal)
-
-
-
-
 ### 目录（Folders）
 
 #### [chain](https://github.com/Tinachain/Tina/tree/master/chain)
