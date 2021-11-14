@@ -5,8 +5,7 @@ Tina链是一个专门为服务于文字、图片、文章以及文件保存而�
 Tinachain is a vertical blockchain platform specifically designed for preservation of text, images, articles and files. With rpc interfaces provided by Tinachain, it is convenient for users to save personal information permanently. Meanwhile, Tinachain provides optional encryption function for users to ensure the security and privacy of their information.
 
 ### Tina链系统架构（System architecture）
-![Image text](https://github.com/Tinachain/Tina/blob/master/image/Architecture.png)
-
+![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Architecture.png)
 
 ### 目录（Folders）
 
