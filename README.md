@@ -22,4 +22,4 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
     Basic contract code in solidity.
 
 ### 公众号
-![logo](https://raw.githubusercontent.com/Tinachain/Tinachain/master/image/wechat.png)
+![logo](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/wechat.png)
