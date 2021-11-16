@@ -5,30 +5,30 @@
 /usr/sbin/ntpdate te cn.pool.ntp.org > / > /dev/null 2>&1
 
 vi /etc/profile
-PATH=$PATH:/projects/chainware
+PATH=$PATH:/projects/tinachain
 
 source /etc/profile
 
 第一步：初始化创世文件
-geth --datadir "/projects/tina/node" init genesis.json
+geth --datadir "/projects/tinachain/node" init genesis.json
 
 
 第二步：启动geth
 nohup geth --nodiscover  \
---maxpeers 3 \
+--maxpeers 20 \
 --identity "tinachain" \
 --rpc \
 --rpcaddr 0.0.0.0 \
 --rpccorsdomain "*" \
 --rpccorsdomain "http://localhost:8000" \
---datadir "/projects/tina/node" \
+--datadir "/projects/tinachain/node" \
 --port 30304 \
 --rpcapi "db,eth,net,web3" \
---networkid 96579 &
+--networkid 98765 &
 
 
 第三步：进入geth控制台
-geth attach ipc:/projects/tina/node/geth.ipc
+geth attach ipc:/projects/tinachain/node/geth.ipc
 
 第四步：创建账号(0x4c386449ddee1ca0eb0f71a2daa5543cedb9ac83)
 personal.newAccount()
