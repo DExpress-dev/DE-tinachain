@@ -431,7 +431,7 @@ func AccumulateRewards(config *params.ChainConfig,
 	stockReward := big.NewInt(1)
 	stockReward.Mul(protocol.TinaUnit, stockParam)
 	bokerContext.AddGasPool(new(big.Int).Set(stockReward).Uint64())
-	//log.Info("dpos.go AccumulateRewards Stock Award", "reward", new(big.Int).Set(stockReward))
+	//	log.Info("dpos.go AccumulateRewards Stock Award", "reward", new(big.Int).Set(stockReward))
 }
 
 //将交易放入到区块中

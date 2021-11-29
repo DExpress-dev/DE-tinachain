@@ -15,18 +15,18 @@ import (
 )
 
 type BokerBackendProto struct {
-	SingleHash      common.Hash `json:"SingleRoot"        gencodec:"required"`
-	ContractsHash   common.Hash `json:"ContractsRoot"    gencodec:"required"`
-	SingleStockHash common.Hash `json:"singleStockRoot"      gencodec:"required"`
-	StocksHash      common.Hash `json:"stocksRoot"      gencodec:"required"`
-	OwnerHash       common.Hash `json:"ownerRoot"      gencodec:"required"`
-	GasPoolHash     common.Hash `json:"gasPoolRoot"      gencodec:"required"`
+	SingleContractHash common.Hash `json:"singleContractsRoot"        gencodec:"required"`
+	ContractsHash      common.Hash `json:"contractsRoot"    gencodec:"required"`
+	SingleStockHash    common.Hash `json:"singleStockRoot"      gencodec:"required"`
+	StocksHash         common.Hash `json:"stocksRoot"      gencodec:"required"`
+	OwnerHash          common.Hash `json:"ownerRoot"      gencodec:"required"`
+	GasPoolHash        common.Hash `json:"gasPoolRoot"      gencodec:"required"`
 }
 
 func (p *BokerBackendProto) Root() (h common.Hash) {
 
 	hw := sha3.NewKeccak256()
-	rlp.Encode(hw, p.SingleHash)
+	rlp.Encode(hw, p.SingleContractHash)
 	rlp.Encode(hw, p.ContractsHash)
 	rlp.Encode(hw, p.SingleStockHash)
 	rlp.Encode(hw, p.StocksHash)
@@ -39,22 +39,22 @@ func (p *BokerBackendProto) Root() (h common.Hash) {
 func ToBokerProto(singleHash, contractsHash, singleStockHash, stocksHash, ownerHash, gasPoolHash common.Hash) *BokerBackendProto {
 
 	return &BokerBackendProto{
-		SingleHash:      singleHash,
-		ContractsHash:   contractsHash,
-		SingleStockHash: singleStockHash,
-		StocksHash:      stocksHash,
-		OwnerHash:       ownerHash,
-		GasPoolHash:     gasPoolHash,
+		SingleContractHash: singleHash,
+		ContractsHash:      contractsHash,
+		SingleStockHash:    singleStockHash,
+		StocksHash:         stocksHash,
+		OwnerHash:          ownerHash,
+		GasPoolHash:        gasPoolHash,
 	}
 }
 
 type BokerContext struct {
-	singleContractsTrie *trie.Trie
-	contractsTrie       *trie.Trie
-	singleStockTrie     *trie.Trie
-	stocksTrie          *trie.Trie
-	ownerTrie           *trie.Trie
-	gasPoolTrie         *trie.Trie
+	singleContractsTrie *trie.Trie //单独合约树
+	contractsTrie       *trie.Trie //合约树
+	singleStockTrie     *trie.Trie //单独股权树
+	stocksTrie          *trie.Trie //股权树
+	ownerTrie           *trie.Trie //链所属者树
+	gasPoolTrie         *trie.Trie //gas池树
 	db                  ethdb.Database
 }
 
@@ -84,34 +84,34 @@ func NewGasPoolTrie(root common.Hash, db ethdb.Database) (*trie.Trie, error) {
 
 func NewBokerContext(db ethdb.Database) (*BokerContext, error) {
 
-	//log.Info("Create Tinachain Single Stock Trie")
+	log.Info("Create Tinachain Single Contract Trie")
 	singleContractsTrie, err := NewSingleContractTrie(common.Hash{}, db)
 	if err != nil {
-		log.Error("Create Tinachain Single Stock Trie", "err", err)
+		log.Error("Create Tinachain Single Contract Trie", "err", err)
 		return nil, err
 	}
 
 	contractsTrie, err := NewContractsTrie(common.Hash{}, db)
 	if err != nil {
-		log.Error("Create Tinachain Single Stock Trie", "err", err)
+		log.Error("Create Tinachain Contracts Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Single Stock Trie")
+	log.Info("Create Tinachain Single Stock Trie")
 	singleStockTrie, err := NewSingleStockTrie(common.Hash{}, db)
 	if err != nil {
 		log.Error("Create Tinachain Single Stock Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Stocks Trie")
+	log.Info("Create Tinachain Stocks Trie")
 	stocksTrie, err := NewStocksTrie(common.Hash{}, db)
 	if err != nil {
 		log.Error("Create Tinachain Stocks Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Owner Trie")
+	log.Info("Create Tinachain Owner Trie")
 	ownerTrie, err := NewOwnerTrie(common.Hash{}, db)
 	if err != nil {
 		log.Error("Create Tinachain Owner Trie", "err", err)
@@ -138,46 +138,54 @@ func NewBokerContext(db ethdb.Database) (*BokerContext, error) {
 
 func NewBokerContextFromProto(db ethdb.Database, ctxProto *BokerBackendProto) (*BokerContext, error) {
 
-	//log.Info("Create Tinachain Single Stock Trie")
-	singleContractsTrie, err := NewSingleContractTrie(ctxProto.SingleHash, db)
+	log.Info("Tinachain Single Contract Trie", "Hash", ctxProto.SingleContractHash.String())
+	singleContractsTrie, err := NewSingleContractTrie(ctxProto.SingleContractHash, db)
 	if err != nil {
-		log.Error("Create Tinachain Single Stock Trie", "err", err)
+		log.Error("Tinachain Single Contract Trie", "err", err)
 		return nil, err
 	}
 
+	log.Info("Tinachain Contracts Trie", "Hash", ctxProto.ContractsHash.String())
 	contractsTrie, err := NewContractsTrie(ctxProto.ContractsHash, db)
 	if err != nil {
-		log.Error("Create Tinachain Single Stock Trie", "err", err)
+		log.Error("Tinachain Contracts Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Single Stock Trie", "Hash", ctxProto.SingleStockHash.String())
+	log.Info("Tinachain Single Stock Trie", "Hash", ctxProto.SingleStockHash.String())
 	singleStockTrie, err := NewSingleStockTrie(ctxProto.SingleStockHash, db)
 	if err != nil {
-		log.Error("Create Tinachain Single Stock Trie", "err", err)
+		log.Error("Tinachain Single Stock Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Stocks Trie", "Hash", ctxProto.StocksHash.String())
+	log.Info("Tinachain Stocks Trie", "Hash", ctxProto.StocksHash.String())
 	stocksTrie, err := NewStocksTrie(ctxProto.StocksHash, db)
 	if err != nil {
-		log.Error("Create Tinachain Stocks Trie", "err", err)
+		log.Error("Tinachain Stocks Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Owner Trie", "Hash", ctxProto.OwnerHash.String())
+	log.Info("Tinachain Owner Trie", "Hash", ctxProto.OwnerHash.String())
 	ownerTrie, err := NewOwnerTrie(ctxProto.OwnerHash, db)
 	if err != nil {
-		log.Error("Create Tinachain Owner Trie", "err", err)
+		log.Error("Tinachain Owner Trie", "err", err)
 		return nil, err
 	}
 
-	//log.Info("Create Tinachain Gas Pool Trie", "Hash", ctxProto.GasPoolHash.String())
+	log.Info("Tinachain Gas Pool Trie", "Hash", ctxProto.GasPoolHash.String())
 	gasPoolTrie, err := NewGasPoolTrie(ctxProto.GasPoolHash, db)
 	if err != nil {
-		log.Error("Create Tinachain Gas Pool Trie", "err", err)
+		log.Error("Tinachain Gas Pool Trie", "err", err)
 		return nil, err
 	}
+
+	//	log.Info("Create Tinachain Tries", "Single Contract Trie", singleContractsTrie.Hash().String(),
+	//		"Contracts Trie", contractsTrie.Hash().String(),
+	//		"Single Stock Trie", singleStockTrie.Hash().String(),
+	//		"Stocks Trie", stocksTrie.Hash().String(),
+	//		"Owner Trie", ownerTrie.Hash().String(),
+	//		"Gas Pool Trie", gasPoolTrie.Hash().String())
 
 	return &BokerContext{
 		singleContractsTrie: singleContractsTrie,
@@ -240,7 +248,7 @@ func (s *BokerContext) FromProto(dcp *BokerBackendProto) error {
 
 	var err error
 
-	s.singleContractsTrie, err = NewSingleStockTrie(dcp.SingleHash, s.db)
+	s.singleContractsTrie, err = NewSingleStockTrie(dcp.SingleContractHash, s.db)
 	if err != nil {
 		return err
 	}
@@ -272,12 +280,12 @@ func (s *BokerContext) FromProto(dcp *BokerBackendProto) error {
 func (s *BokerContext) ToProto() *BokerBackendProto {
 	return &BokerBackendProto{
 
-		SingleHash:      s.singleContractsTrie.Hash(),
-		ContractsHash:   s.contractsTrie.Hash(),
-		SingleStockHash: s.singleStockTrie.Hash(),
-		StocksHash:      s.stocksTrie.Hash(),
-		OwnerHash:       s.ownerTrie.Hash(),
-		GasPoolHash:     s.gasPoolTrie.Hash(),
+		SingleContractHash: s.singleContractsTrie.Hash(),
+		ContractsHash:      s.contractsTrie.Hash(),
+		SingleStockHash:    s.singleStockTrie.Hash(),
+		StocksHash:         s.stocksTrie.Hash(),
+		OwnerHash:          s.ownerTrie.Hash(),
+		GasPoolHash:        s.gasPoolTrie.Hash(),
 	}
 }
 
@@ -314,30 +322,30 @@ func (s *BokerContext) CommitTo(dbw trie.DatabaseWriter) (*BokerBackendProto, er
 	}
 
 	return &BokerBackendProto{
-		SingleHash:      singleContractsRoot,
-		ContractsHash:   contractsRoot,
-		SingleStockHash: singleStockRoot,
-		StocksHash:      stocksRoot,
-		OwnerHash:       ownerRoot,
-		GasPoolHash:     gasPoolRoot,
+		SingleContractHash: singleContractsRoot,
+		ContractsHash:      contractsRoot,
+		SingleStockHash:    singleStockRoot,
+		StocksHash:         stocksRoot,
+		OwnerHash:          ownerRoot,
+		GasPoolHash:        gasPoolRoot,
 	}, nil
 }
 
-func (s *BokerContext) SingleContractsTrie() *trie.Trie           { return s.singleContractsTrie }
-func (s *BokerContext) ContractsTrie() *trie.Trie                 { return s.contractsTrie }
-func (s *BokerContext) SingleStockTrie() *trie.Trie               { return s.singleStockTrie }
-func (s *BokerContext) StocksTrie() *trie.Trie                    { return s.stocksTrie }
-func (s *BokerContext) OwnerTrie() *trie.Trie                     { return s.ownerTrie }
-func (s *BokerContext) GasPoolTrie() *trie.Trie                   { return s.gasPoolTrie }
+func (s *BokerContext) SingleContractsTrie() *trie.Trie { return s.singleContractsTrie }
+func (s *BokerContext) ContractsTrie() *trie.Trie       { return s.contractsTrie }
+func (s *BokerContext) SingleStockTrie() *trie.Trie     { return s.singleStockTrie }
+func (s *BokerContext) StocksTrie() *trie.Trie          { return s.stocksTrie }
+func (s *BokerContext) OwnerTrie() *trie.Trie           { return s.ownerTrie }
+func (s *BokerContext) GasPoolTrie() *trie.Trie         { return s.gasPoolTrie }
+func (s *BokerContext) SetSingleContracts(singleContractsTrie *trie.Trie) {
+	s.singleContractsTrie = singleContractsTrie
+}
 func (s *BokerContext) SetContracts(contractsTrie *trie.Trie)     { s.contractsTrie = contractsTrie }
 func (s *BokerContext) SetSingleStock(singleStockTrie *trie.Trie) { s.singleStockTrie = singleStockTrie }
 func (s *BokerContext) SetStocks(stocksTrie *trie.Trie)           { s.stocksTrie = stocksTrie }
 func (s *BokerContext) SetOwner(ownerTrie *trie.Trie)             { s.ownerTrie = ownerTrie }
 func (s *BokerContext) SetGasPool(gasPoolTrie *trie.Trie)         { s.gasPoolTrie = gasPoolTrie }
 func (s *BokerContext) DB() ethdb.Database                        { return s.db }
-func (s *BokerContext) SetSingleContracts(singleContractsTrie *trie.Trie) {
-	s.singleContractsTrie = singleContractsTrie
-}
 
 //Trie
 func (s *BokerContext) setContractsTrie(address []common.Address) error {
@@ -372,6 +380,8 @@ func (s *BokerContext) getContractsTrie() ([]common.Address, error) {
 
 	contractsRLP, err := s.contractsTrie.TryGet(protocol.ContractsPrefix)
 	if err != nil {
+
+		log.Error("s.contractsTrie.TryGet Failed")
 		return []common.Address{}, err
 	}
 
@@ -400,7 +410,7 @@ func (s *BokerContext) setSingleContractsTrie(address common.Address, contractTy
 
 func (s *BokerContext) getSingleContractsTrie(address common.Address) (protocol.BaseContractType, error) {
 
-	log.Info("(s *BokerContext) GetSingleContractsTrie")
+	log.Info("(s *BokerContext) getSingleContractsTrie", "address", address.String())
 
 	key := address.Bytes()
 	v, err := s.singleContractsTrie.TryGet(key)
@@ -901,42 +911,54 @@ func (s *BokerContext) GetSystemContractAddress() (common.Address, error) {
 	if err != nil {
 		return common.StringToAddress(""), err
 	}
-	for _, v := range contracts {
 
-		contractType, err := s.getSingleContractsTrie(v)
-		if err != nil {
-			return common.StringToAddress(""), err
-		}
-		if contractType == protocol.System {
-			return v, nil
+	if len(contracts) > 0 {
+		for _, v := range contracts {
+
+			contractType, err := s.getSingleContractsTrie(v)
+			if err != nil {
+				return common.StringToAddress(""), err
+			}
+			if contractType == protocol.System {
+				return v, nil
+			}
 		}
 	}
+
 	return common.StringToAddress(""), protocol.ErrNotFoundContract
 }
 
 func (s *BokerContext) SetSystemContract(address common.Address, from common.Address) error {
 
-	log.Info("(c *BokerContracts) SetSystemBaseContract", "address", address.String(), "from", from.String())
+	log.Info("(c *BokerContracts) SetSystemContract", "address", address.String(), "from", from.String())
 
 	contracts, err := s.getContractsTrie()
 	if err != nil {
 		return err
 	}
-	for _, v := range contracts {
-		if v == address {
+
+	log.Info("(c *BokerContracts) SetSystemContract", "len(contracts)", len(contracts))
+	if len(contracts) > 0 {
+		for _, v := range contracts {
+			if v == address {
+				return protocol.ErrContractExist
+			}
+		}
+
+		log.Info("(c *BokerContracts) SetSystemContract1")
+		contractType, _ := s.getSingleContractsTrie(address)
+		if contractType == protocol.System {
 			return protocol.ErrContractExist
 		}
 	}
 
-	contractType, _ := s.getSingleContractsTrie(address)
-	if contractType == protocol.System {
-		return protocol.ErrContractExist
-	}
-
+	log.Info("(c *BokerContracts) SetSystemContract2")
 	contracts = append(contracts, address)
 	if err := s.setSingleContractsTrie(address, protocol.System); err != nil {
 		return err
 	}
+
+	log.Info("(c *BokerContracts) SetSystemContract3")
 	if err := s.setContractsTrie(contracts); err != nil {
 		return err
 	}
@@ -952,9 +974,12 @@ func (s *BokerContext) SetUserBaseContract(address common.Address, from common.A
 	if err != nil {
 		return err
 	}
-	for _, v := range contracts {
-		if v == address {
-			return protocol.ErrContractExist
+
+	if len(contracts) > 0 {
+		for _, v := range contracts {
+			if v == address {
+				return protocol.ErrContractExist
+			}
 		}
 	}
 
@@ -978,31 +1003,36 @@ func (s *BokerContext) CancelUserBaseContract(address common.Address, from commo
 		return err
 	}
 
-	var exist bool = false
-	var postion int
-	for i, v := range contracts {
-		if v == address {
-			postion = i
-			exist = true
-			break
+	if len(contracts) > 0 {
+
+		var exist bool = false
+		var postion int
+		for i, v := range contracts {
+			if v == address {
+				postion = i
+				exist = true
+				break
+			}
 		}
-	}
-	if !exist {
-		return protocol.ErrNotFoundContract
+		if !exist {
+			return protocol.ErrNotFoundContract
+		}
+
+		contractType, _ := s.getSingleContractsTrie(address)
+		if contractType != protocol.User {
+			return protocol.ErrNotFoundContract
+		}
+		if err := s.deleteSingleContractsTrie(address); err != nil {
+			return err
+		}
+
+		contracts = append(contracts[:postion], contracts[postion+1:]...)
+		if err := s.setContractsTrie(contracts); err != nil {
+			return err
+		}
+
 	}
 
-	contractType, _ := s.getSingleContractsTrie(address)
-	if contractType != protocol.User {
-		return protocol.ErrNotFoundContract
-	}
-	if err := s.deleteSingleContractsTrie(address); err != nil {
-		return err
-	}
-
-	contracts = append(contracts[:postion], contracts[postion+1:]...)
-	if err := s.setContractsTrie(contracts); err != nil {
-		return err
-	}
 	return nil
 }
 

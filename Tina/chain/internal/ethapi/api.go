@@ -1781,10 +1781,13 @@ func (args *SendTxArgs) SetDefaults(ctx context.Context, b Backend) error {
 
 	//如果Nonce为空，则产生一个Nonce
 	if args.Nonce == nil {
+
+		log.Info("SetDefaults GetPoolNonce", "args.Nonce == nil Create New Nonce", args.From)
 		nonce, err := b.GetPoolNonce(ctx, args.From)
 		if err != nil {
 			return err
 		}
+		log.Info("SetDefaults GetPoolNonce", "nonce", nonce)
 		args.Nonce = (*hexutil.Uint64)(&nonce)
 	}
 	log.Info("SetDefaults", "Nonce", args.Nonce)
@@ -1830,7 +1833,6 @@ func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 
 	//设置IP地址
 	tx.SetIp()
-	log.Info("SubmitTransaction SetIp", "Ip", string(tx.Ip()[:]), "tx.Hash", tx.Hash().String())
 
 	//发送交易
 	if err := b.SendTx(ctx, tx); err != nil {
@@ -1952,7 +1954,7 @@ func (s *PublicTransactionPoolAPI) SendRawTransaction(ctx context.Context, encod
 	if resultErr == nil {
 		log.Info("(s *PublicTransactionPoolAPI) SendRawTransaction SubmitTransaction", "hash", hash.String(), "from", sender.String())
 	} else {
-		log.Error("(s *PublicTransactionPoolAPI) SendRawTransaction SubmitTransaction Err")
+		log.Error("(s *PublicTransactionPoolAPI) SendRawTransaction SubmitTransaction Err", "err", resultErr.Error())
 	}
 
 	return hash, resultErr
@@ -1994,17 +1996,16 @@ type SignTransactionResult struct {
 // the given from address and it needs to be unlocked.
 func (s *PublicTransactionPoolAPI) SignTransaction(ctx context.Context, args SendTxArgs) (*SignTransactionResult, error) {
 
-	log.Info("(s *PublicTransactionPoolAPI) SignTransaction")
+	log.Info("(s *PublicTransactionPoolAPI) SignTransaction ", "args.Nonce", args.Nonce)
 
 	if args.Nonce == nil {
-		// Hold the addresse's mutex around signing to prevent concurrent assignment of
-		// the same nonce to multiple accounts.
 		s.nonceLock.LockAddr(args.From)
 		defer s.nonceLock.UnlockAddr(args.From)
 	}
 	if err := args.SetDefaults(ctx, s.b); err != nil {
 		return nil, err
 	}
+	log.Info("(s *PublicTransactionPoolAPI) SignTransaction SetDefaults", "nonce", args.Nonce)
 
 	trans, err := args.ToTransaction()
 	if err != nil {

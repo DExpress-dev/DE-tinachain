@@ -490,7 +490,7 @@ func (tx *Transaction) Validate() error {
 		}
 	case protocol.Stock:
 		{
-			if tx.Minor() < protocol.StockManager || tx.Minor() > protocol.StockUnFrozen {
+			if tx.Minor() < protocol.StockManager || tx.Minor() > protocol.StockAssignGas {
 				return errors.New("stock transaction unknown minor transaction type")
 			}
 		}

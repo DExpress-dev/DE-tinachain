@@ -81,9 +81,9 @@ func (s *BokerInterfaceService) Start() {
 
 	s.start = true
 
-	go s.pollVote()
-	go s.pollBlacks()
-	go s.pollGas()
+	//	go s.pollVote()
+	//		go s.pollBlacks()
+	//		go s.pollGas()
 }
 
 func (s *BokerInterfaceService) Stop() {
@@ -270,8 +270,11 @@ func (s *BokerInterfaceService) pollGas() {
 					continue
 				}
 
-				tx, _ := s.ethereum.Boker().SubmitBokerTransaction(ctx, protocol.Stock, protocol.StockAssignGas, coinbase, common.Address{}, []byte(""), []byte(""), new(big.Int).SetUint64(0), 0)
-				log.Info("(s *BokerInterfaceService) pollGas", "tx", tx.Hash(), "tx Timer", tx.Time())
+				tx, txErr := s.ethereum.Boker().SubmitBokerTransaction(ctx, protocol.Stock, protocol.StockAssignGas, coinbase, common.Address{}, []byte(""), []byte(""), new(big.Int).SetUint64(0), 0)
+				if txErr != nil {
+					log.Info("(s *BokerInterfaceService) pollGas", "tx", tx.Hash(), "tx Timer", tx.Time())
+				}
+
 			}
 		}
 	}

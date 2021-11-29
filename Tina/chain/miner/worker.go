@@ -408,7 +408,7 @@ func (self *worker) wait() {
 
 func newBokerFromProto(db ethdb.Database, bokerProto *types.BokerBackendProto) (*trie.Trie, *trie.Trie, error) {
 
-	singleTrie, err := trie.NewTrieWithPrefix(bokerProto.SingleHash, protocol.SingleContractPrefix, db)
+	singleTrie, err := trie.NewTrieWithPrefix(bokerProto.SingleContractHash, protocol.SingleContractPrefix, db)
 	if err != nil {
 		return nil, nil, err
 	}

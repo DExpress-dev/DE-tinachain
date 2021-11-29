@@ -35,8 +35,11 @@ import (
 )
 
 const (
-	contentType                 = "application/json"
-	maxHTTPRequestContentLength = 1024 * 128
+	//设置HTTP请求的类型
+	contentType  = "application/json"
+	contentType2 = "multipart/form-data"
+	//设置HTTP请求的最大长度
+	maxHTTPRequestContentLength = 50 * 1024 * 1024 //原来参数值为:maxHTTPRequestContentLength = 1024 * 128
 )
 
 var nullAddr, _ = net.ResolveTCPAddr("tcp", "127.0.0.1:0")
@@ -117,6 +120,7 @@ func (c *Client) sendBatchHTTP(ctx context.Context, op *requestOp, msgs []*jsonr
 }
 
 func (hc *httpConn) doRequest(ctx context.Context, msg interface{}) (io.ReadCloser, error) {
+
 	body, err := json.Marshal(msg)
 	if err != nil {
 		return nil, err

@@ -531,22 +531,25 @@ func (st *StateTransition) bokerAssignGas(operation common.Address, now *big.Int
 	}
 
 	//得到每个股份应该分配的数量
-	singleGas := gas / totalStock
+	if totalStock > 0 {
+		singleGas := gas / totalStock
 
-	//开始分币
-	var curGas uint64 = 0
-	for _, v := range stocks {
+		//开始分币
+		var curGas uint64 = 0
+		for _, v := range stocks {
 
-		userGas := singleGas * v.Number
-		totalGas := curGas + userGas
-		if totalGas > gas {
-			userGas = gas - curGas
+			userGas := singleGas * v.Number
+			totalGas := curGas + userGas
+			if totalGas > gas {
+				userGas = gas - curGas
+			}
+			curGas = curGas + userGas
+
+			//给用户加钱
+			st.state.AddBalance(v.Account, new(big.Int).SetUint64(userGas))
 		}
-		curGas = curGas + userGas
-
-		//给用户加钱
-		st.state.AddBalance(v.Account, new(big.Int).SetUint64(userGas))
 	}
+
 	return []byte(""), new(big.Int).SetInt64(0), new(big.Int).SetInt64(0), false, nil
 }
 

@@ -547,6 +547,8 @@ func (pool *TxPool) normalValidateTx(tx *types.Transaction, local bool) error {
 
 	//判断交易中的Nonce是否大于发出交易用户的当前Nonce值
 	if pool.currentState.GetNonce(from) > tx.Nonce() {
+
+		log.Error("normalValidateTx nonce too low", "from current Nonce", pool.currentState.GetNonce(from), "tx Nonce", tx.Nonce())
 		return ErrNonceTooLow
 	}
 	log.Info("normalValidateTx", "from current Nonce", pool.currentState.GetNonce(from), "tx Nonce", tx.Nonce())
@@ -677,11 +679,15 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 	if protocol.Normal == tx.Major() || protocol.SystemBase == tx.Major() {
 
 		if tx.Size() > protocol.MaxNormalSize {
+
+			log.Error("(pool *TxPool) validateTx", "tx.Major()", tx.Major(), "tx.Size()", tx.Size())
 			return ErrOversizedData
 		}
 	} else if protocol.Extra == tx.Major() {
 
 		if len(tx.Extra()) > int(protocol.MaxExtraSize) {
+
+			log.Error("(pool *TxPool) validateTx", "tx.Major()", tx.Major(), "len(tx.Extra())", len(tx.Extra()))
 			return ErrOverExtraData
 		}
 
@@ -689,6 +695,8 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 
 	//交易值是否进行签名判断
 	if tx.Value().Sign() < 0 {
+
+		log.Error("(pool *TxPool) validateTx", "tx.Value().Sign()<0 ", tx.Value().Sign())
 		return ErrNegativeValue
 	}
 
@@ -716,7 +724,7 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 
 	} else if protocol.Stock == tx.Major() {
 
-		if (tx.Minor() >= protocol.StockManager) && (tx.Minor() <= protocol.StockUnFrozen) {
+		if (tx.Minor() >= protocol.StockManager) && (tx.Minor() <= protocol.StockAssignGas) {
 
 			return pool.stockValidateTx(tx, local)
 		}

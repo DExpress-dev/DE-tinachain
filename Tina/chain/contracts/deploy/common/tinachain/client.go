@@ -9,6 +9,7 @@ import (
 
 	"github.com/Tinachain/Tina/chain/accounts/abi"
 	"github.com/Tinachain/Tina/chain/accounts/abi/bind"
+	log4plus "github.com/Tinachain/Tina/chain/boker/common/log4go"
 	"github.com/Tinachain/Tina/chain/common"
 	ethcommon "github.com/Tinachain/Tina/chain/common"
 	"github.com/Tinachain/Tina/chain/common/compiler"
@@ -82,13 +83,23 @@ func (client *Client) ContractDeploy(contract *ContractInfo, params ...interface
 		return fmt.Errorf("abi.JSON err=%s abi=%s", err.Error(), contract.Abi)
 	}
 
+	if optsErr := client.CreateNewOpts(); optsErr != nil {
+
+		log4plus.Error("ContractDeploy CreateNewOpts Failed")
+		return fmt.Errorf("ContractDeploy CreateNewOpts Failed")
+	}
+
 	address, tx, _, err = bind.DeployContract(client.Opts, parsed, ethcommon.FromHex(contract.Bin), client.EthClient, params...)
 	if err != nil {
+
+		log4plus.Error("bind.DeployContract err=%s abi=%s bin=%s", err.Error(), contract.Abi, contract.Bin)
 		return fmt.Errorf("bind.DeployContract err=%s abi=%s bin=%s", err.Error(), contract.Abi, contract.Bin)
 	}
 
 	_, err = bind.WaitDeployed(context.Background(), client.EthClient, tx)
 	if err != nil {
+
+		log4plus.Error("bind.WaitDeployed err=%v", err)
 		return fmt.Errorf("bind.WaitDeployed err=%v", err)
 	}
 	contract.Address = address
@@ -101,15 +112,24 @@ func (client *Client) SetContract(contractName string, addrContract ethcommon.Ad
 		return fmt.Errorf("manager not specified, call AtManager first!")
 	}
 
+	if optsErr := client.CreateNewOpts(); optsErr != nil {
+		return fmt.Errorf("CreateNewOpts Failed")
+	}
+
 	tx, err := client.ContractManager.SetContract(client.Opts, contractName, addrContract)
 	if err != nil {
 		return fmt.Errorf("client.ContractManager.SetContract: %v", err)
 	}
+
+	log4plus.Info("SetContract tx.nonce=%d", tx.Nonce())
+
 	ctx := context.Background()
 	_, err = bind.WaitMined(ctx, client.EthClient, tx)
 	if err != nil {
 		return fmt.Errorf("bind.WaitMined :%v", err)
 	}
+	log4plus.Info("SetContract WaitMined Finish tx.nonce=%d", tx.Nonce())
+
 	return nil
 }
 
@@ -180,6 +200,7 @@ func (client *Client) AtInterfaceBase() (err error) {
 }
 
 func (client *Client) SetSystemBaseContracts(address ethcommon.Address) (err error) {
+
 	hash, err := client.EthClient.SetSystemBaseContracts(context.Background(), address)
 	if err != nil {
 		return err
@@ -200,6 +221,17 @@ func (client *Client) GetBalance(address string) (*big.Int, error) {
 		return nil, err
 	}
 	return balance, nil
+}
+
+func (client *Client) CreateNewOpts() (err error) {
+
+	log4plus.Info("--->>>(client *Client) CreateNewOpts")
+	client.Opts, err = bind.NewTransactor(strings.NewReader(client.KeyJson), client.Password)
+	if err != nil {
+		return err
+	}
+	client.Opts.GasLimit = big.NewInt(4700000)
+	return nil
 }
 
 func (client *Client) Unlock(keyJson, password string) (err error) {

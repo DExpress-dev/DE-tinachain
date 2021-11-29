@@ -1,0 +1,9 @@
+{
+    "RPC":"http://127.0.0.1:8545",
+    "InterfaceAddr":"0x518d1f05A5E67eEAb6c9914a2042F0F53c6E3583",
+    "InterfaceBaseAddr":"0xbe691343cF3054a950189D4838BbB3423E5D5d1A",
+    "KeystoreFile":"keystore.json",
+    "Passwrod":"123456",
+    "UserListen":"0.0.0.0:80",
+	"ChannelListen":"0.0.0.0:8080"
+}

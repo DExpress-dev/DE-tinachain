@@ -1495,7 +1495,7 @@ func (d *Downloader) syncDposContextState(context *types.DposContextProto) error
 // Todo: sync dpos context in concurrent
 func (d *Downloader) syncBokerContextState(context *types.BokerBackendProto) error {
 	roots := []common.Hash{
-		context.SingleHash,
+		context.SingleContractHash,
 		context.ContractsHash,
 	}
 	for _, root := range roots {
