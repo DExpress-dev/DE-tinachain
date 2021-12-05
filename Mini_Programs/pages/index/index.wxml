@@ -1,0 +1,70 @@
+<!--index.wxml-->
+<!-- banner -->
+<view class="banner_sy">
+  <swiper autoplay="{{autoplay}}" bindchange="swiperChange" circular="true">
+    <block wx:for="{{imgs_banner}}">   
+      <swiper-item  bindtap="jump_List_xq">
+        <view class="text">
+          <view class="jianj" style="font-size:12px;">{{item.name}}</view>
+          <view class="i_henx"></view>
+          <view class="text_xia" style="font-size:10px;">{{item.text}}</view>
+        </view>  
+        <image  mode='aspectFill'  src="{{item.url}}"></image>
+      </swiper-item> 
+    </block>
+  </swiper>  
+  <!--重置小圆点的样式  -->
+  <view class="dots">  
+      <block wx:for="{{imgs_banner}}">
+          <view class="dot{{index == currentSwiper ? ' active' : ''}}"></view>  
+      </block>  
+  </view>
+</view>
+
+<!-- banner结束 -->  
+
+<view class="hou_biaot">
+<text  style="font-size:14px;">上链图片列表</text>
+  <view bindtap="jump_List">
+    <image src="/images/hou_jiant.png"></image>
+  </view>
+</view>
+
+<!-- 从链上获取图片数据 --> 
+<view class="index_list">
+  <block wx:for="{{pictures}}" >
+
+    <!-- 图片数据 -->
+    <image mode='aspectFill' src="{{item.url}}"></image>
+    <view class="text"> 
+
+      <!-- 图片名称 -->
+      <view class="bt" style="font-size:12px;">{{item.name}}</view>  
+      <!-- 上链时间 -->
+      <view class="shum"><view class="span" style="font-size:10px;">上链时间：{{item.timer}}</view></view> 
+    </view>
+  </block>
+</view>
+
+<view class="rpx20"></view>
+<!-- footer -->
+<view class="footer">
+  <view class="logo"><image src="/images/logo.png"></image></view>
+  <view class="erweim">
+    <view>
+      <image src="{{wixin}}"></image>
+      <view style="font-size:12px;">我们的微信</view>
+    </view>
+    <view>
+      <image src="{{github}}"></image>
+      <view style="font-size:12px;">关注Github</view>
+    </view>
+  </view>
+</view>
+<!-- 结束 -->
+<view class="rpx20"></view>
+
+<!-- 浮动 -->
+<view class="fudong_dd">
+  <view class='goTop' hidden='{{!floorstatus}}' bindtap="goTop"><image src="/images/fudong_se_06.png"></image></view>
+</view>

@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/my/my",
+    "pages/list/list",
+    "pages/cs_ddd/cs_ddd"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "图链-首页",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#444",
+    "selectedColor": "#444",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/dibu.png",
+        "selectedIconPath": "images/dibu_.png"
+      },
+
+      {
+        "pagePath": "pages/logs/logs",
+        "text": "上链",
+        "iconPath": "images/dibu1.png",
+        "selectedIconPath": "images/dibu1_.png"
+      },
+
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "images/dibu2.png",
+        "selectedIconPath": "images/dibu2_.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

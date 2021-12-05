@@ -1,0 +1,27 @@
+<view class="my_tib_k">
+  <image mode="widthFix" src="/images/my_beij.jpg"></image>
+  <view class="tx">
+    <image src="/images/toux.jpg"></image>
+    <text>石玲玲</text>
+  </view>
+</view> 
+
+<view class="my_daoh">
+  <view >
+    <view>12</view>
+    <text>上链图片</text>
+  </view>
+
+  <view >
+    <view>0</view>
+    <text>使用费用</text>
+  </view>
+
+  <view>
+    <view>5</view>
+    <text>心动收藏</text>
+  </view>
+
+</view>
+
+ 

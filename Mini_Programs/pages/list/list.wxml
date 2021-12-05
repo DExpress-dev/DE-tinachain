@@ -1,0 +1,55 @@
+<!--pages/list/list.wxml-->
+<!-- <text>pages/list/list.wxml</text> -->
+
+<view class="rpx20"></view>
+<view current="{{currentData}}" class='swiper' duration="300" bindchange="bindchange">
+  <!--上链图片列表-->
+  <view >
+    <view class="index_list">
+      <view>
+        <image src="/images/cp_img.jpg"></image>
+        <view class="text"> 
+          <view class="bt" >我祝你们在彼此身上找到的快乐</view>
+          <view class="shum"><view class="span">上链时间：2021-12-2</view></view> 
+        </view>
+      </view>
+      <view>
+        <image src="/images/cp_img.jpg"></image>
+        <view class="text"> 
+          <view class="bt" >我祝你们在彼此身上找到的快乐</view>
+          <view class="shum"><view class="span">上链时间：2021-12-2</view></view> 
+        </view>
+      </view>
+      <view>
+        <image src="/images/cp_img.jpg"></image>
+        <view class="text"> 
+          <view class="bt" >我祝你们在彼此身上找到的快乐</view>
+          <view class="shum"><view class="span">上链时间：2021-12-2</view></view> 
+        </view>
+      </view>
+      <view>
+        <image src="/images/cp_img.jpg"></image>
+        <view class="text"> 
+          <view class="bt" >我祝你们在彼此身上找到的快乐</view>
+          <view class="shum"><view class="span">上链时间：2021-12-2</view></view> 
+        </view>
+      </view>
+      <view>
+        <image src="/images/cp_img.jpg"></image>
+        <view class="text"> 
+          <view class="bt" >我祝你们在彼此身上找到的快乐</view>
+          <view class="shum"><view class="span">上链时间：2021-12-2</view></view>  
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>
+
+<!-- 结束 -->
+<view class="rpx20"></view>
+
+<!-- 浮动
+<view class="fudong_dd">
+  <view class='index.goTop' hidden='{{!floorstatus}}' bindtap="goTop"><image src="/images/fudong_se_06.png"></image></view>
+</view> -->
