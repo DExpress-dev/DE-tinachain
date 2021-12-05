@@ -1,0 +1,83 @@
+{
+	"compiler": {
+		"version": "0.5.5+commit.47a71e8f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "operator",
+						"type": "address"
+					},
+					{
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "onERC721Received",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bytes4"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"onERC721Received(address,address,uint256,bytes)": {
+					"details": "ERC721智能合约在`transfer`完成后，在接收这地址上调用这个函数。 函数可以通过revert 拒绝接收。返回非`0x150b7a02` 也同样是拒绝接收。 注意: 调用这个函数的 msg.sender是ERC721的合约地址",
+					"params": {
+						"data": "： 附加信息",
+						"from": "：之前的NFT拥有者",
+						"operator": "：调用 `safeTransferFrom` 函数的地址。",
+						"tokenId": "： NFT token id"
+					},
+					"return": "正确处理时返回 `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`"
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {
+				"onERC721Received(address,address,uint256,bytes)": {
+					"notice": "处理接收NFT"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"NFT.sol": "IERC721Receiver"
+		},
+		"evmVersion": "petersburg",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"NFT.sol": {
+			"keccak256": "0x6ccd1b91a03e97cb2801675d60d7a4cabebee1c171e7b8c4ab7528ca4d98cc62",
+			"urls": [
+				"bzzr://a015f018bb0ae9ebf63832704d4bd82246c545dd4c3dd7b178dc5846d54a8b00"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,481 @@
+{
+	"compiler": {
+		"version": "0.5.5+commit.47a71e8f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "interfaceId",
+						"type": "bytes4"
+					}
+				],
+				"name": "supportsInterface",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getApproved",
+				"outputs": [
+					{
+						"name": "operator",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "totalSupply",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenOfOwnerByIndex",
+				"outputs": [
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "safeTransferFrom",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenByIndex",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "ownerOf",
+				"outputs": [
+					{
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
+				"outputs": [
+					{
+						"name": "balance",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "operator",
+						"type": "address"
+					},
+					{
+						"name": "_approved",
+						"type": "bool"
+					}
+				],
+				"name": "setApprovalForAll",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "safeTransferFrom",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"name": "operator",
+						"type": "address"
+					}
+				],
+				"name": "isApprovedForAll",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "approved",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "Approval",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "operator",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"name": "approved",
+						"type": "bool"
+					}
+				],
+				"name": "ApprovalForAll",
+				"type": "event"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"approve(address,uint256)": {
+					"details": "零地址表示没有授权的地址。  如果`msg.sender` 不是当前的所有者或操作员",
+					"params": {
+						"tokenId": "： token id"
+					}
+				},
+				"balanceOf(address)": {
+					"details": "NFT 不能分配给零地址，查询零地址同样会异常",
+					"params": {
+						"owner": "： 待查地址"
+					},
+					"return": "返回数量，也许是0"
+				},
+				"getApproved(uint256)": {
+					"details": "如果 `tokenId` 无效，抛出异常。",
+					"params": {
+						"tokenId": "：  token id"
+					},
+					"return": "返回授权地址， 零地址表示没有。"
+				},
+				"isApprovedForAll(address,address)": {
+					"params": {
+						"operator": "代表所有者的授权操作员",
+						"owner": "所有者"
+					}
+				},
+				"ownerOf(uint256)": {
+					"details": "NFT 不能分配给零地址，查询零地址抛出异常",
+					"params": {
+						"tokenId": "NFT 的id"
+					},
+					"return": "返回所有者地址"
+				},
+				"safeTransferFrom(address,address,uint256,bytes)": {
+					"details": "如果`msg.sender` 不是当前的所有者（或授权者）抛出异常 如果 `from` 不是所有者、`to` 是零地址、`tokenId` 不是有效id 均抛出异常。  当转移完成时，函数检查  `to` 是否是合约，如果是，调用 `to`的 `onERC721Received` 并且检查返回值是否是 `0x150b7a02` (即：`bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`)  如果不是抛出异常。",
+					"params": {
+						"data": ": 附加额外的参数（没有指定格式），传递给接收者。",
+						"from": "：当前的所有者",
+						"to": "：新的所有者",
+						"tokenId": "：要转移的token id."
+					}
+				},
+				"setApprovalForAll(address,bool)": {
+					"details": "触发 ApprovalForAll 事件，合约必须允许每个所有者可以有多个操作员。",
+					"params": {
+						"_approved": "True 表示授权, false 表示撤销",
+						"operator": "要添加到授权操作员列表中的地址"
+					}
+				},
+				"supportsInterface(bytes4)": {
+					"details": "函数要少于  30,000 gas.",
+					"params": {
+						"interfaceId": "ERC-165定义的接口id"
+					},
+					"return": "合约实现了 `interfaceId`（不为  0xffffffff）返回`true` ， 否则false."
+				},
+				"tokenByIndex(uint256)": {
+					"params": {
+						"index": "小于 `balanceOf(_owner)` 的索引号"
+					},
+					"return": "对应的token id （标准不指定排序方式)"
+				},
+				"tokenOfOwnerByIndex(address,uint256)": {
+					"details": "如果 `index` >= `totalSupply()` 则抛出异常",
+					"params": {
+						"index": "小于 `totalSupply()`的索引号"
+					},
+					"return": "对应的token id（标准不指定排序方式)"
+				},
+				"totalSupply()": {
+					"return": "返回合约有效跟踪（所有者不为零地址）的 NFT数量"
+				},
+				"transferFrom(address,address,uint256)": {
+					"details": "如果`msg.sender` 不是当前的所有者（或授权者、操作员）抛出异常 如果 `from` 不是所有者、`to` 是零地址、`tokenId` 不是有效id 均抛出异常。"
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {
+				"approve(address,uint256)": {
+					"notice": "更改或确认NFT的授权地址"
+				},
+				"balanceOf(address)": {
+					"notice": "统计所持有的NFTs数量"
+				},
+				"getApproved(uint256)": {
+					"notice": "获取单个NFT的授权地址"
+				},
+				"isApprovedForAll(address,address)": {
+					"notice": "查询一个地址是否是另一个地址的授权操作员"
+				},
+				"ownerOf(uint256)": {
+					"notice": "返回所有者"
+				},
+				"safeTransferFrom(address,address,uint256)": {
+					"notice": "将NFT的所有权从一个地址转移到另一个地址，功能同上，不带data参数。"
+				},
+				"safeTransferFrom(address,address,uint256,bytes)": {
+					"notice": "将NFT的所有权从一个地址转移到另一个地址"
+				},
+				"setApprovalForAll(address,bool)": {
+					"notice": "启用或禁用第三方（操作员）管理 `msg.sender` 所有资产"
+				},
+				"supportsInterface(bytes4)": {
+					"notice": "是否合约实现了接口"
+				},
+				"tokenByIndex(uint256)": {
+					"notice": "枚举索引某个所有者的 NFTs"
+				},
+				"tokenOfOwnerByIndex(address,uint256)": {
+					"notice": "枚举索引NFT"
+				},
+				"totalSupply()": {
+					"notice": "NFTs 计数"
+				},
+				"transferFrom(address,address,uint256)": {
+					"notice": "转移所有权 -- 调用者负责确认`to`是否有能力接收NFTs，否则可能永久丢失。"
+				}
+			},
+			"notice": "枚举接口: 枚举接口包含了按索引获取到对应的代币，可以提供NFTs的完整列表，以便NFT可被发现。"
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"NFT.sol": "IERC721Enumerable"
+		},
+		"evmVersion": "petersburg",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"NFT.sol": {
+			"keccak256": "0x6ccd1b91a03e97cb2801675d60d7a4cabebee1c171e7b8c4ab7528ca4d98cc62",
+			"urls": [
+				"bzzr://a015f018bb0ae9ebf63832704d4bd82246c545dd4c3dd7b178dc5846d54a8b00"
+			]
+		}
+	},
+	"version": 1
+}

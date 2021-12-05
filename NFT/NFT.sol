@@ -1,187 +1,6 @@
-/***
-* MIT License
-* ===========
-*
-* Copyright (c) 2020
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in all
-* copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-*/
-// File: @openzeppelin/contracts/GSN/Context.sol
-
 pragma solidity ^0.5.0;
 
-/*
- * @dev Provides information about the current execution context, including the
- * sender of the transaction and its data. While these are generally available
- * via msg.sender and msg.data, they should not be accessed in such a direct
- * manner, since when dealing with GSN meta-transactions the account sending and
- * paying for execution may not be the actual sender (as far as an application
- * is concerned).
- *
- * This contract is only required for intermediate, library-like contracts.
- * 这个合约仅用来要求中间的、链接库合约
- */
-contract Context {
-    // Empty internal constructor, to prevent people from mistakenly deploying
-    // an instance of this contract, which should be used via inheritance.
-    constructor () internal { }
-    // solhint-disable-previous-line no-empty-blocks
-
-    function _msgSender() internal view returns (address payable) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view returns (bytes memory) {
-        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
-        return msg.data;
-    }
-}
-
-// File: @openzeppelin/contracts/introspection/IERC165.sol
-
-pragma solidity ^0.5.0;
-
-/**
- * @dev Interface of the ERC165 standard, as defined in the
- * https://eips.ethereum.org/EIPS/eip-165[EIP].
- *
- * Implementers can declare support of contract interfaces, which can then be
- * queried by others ({ERC165Checker}).
- *
- * For an implementation, see {ERC165}.
- */
-interface IERC165 {
-    /// @notice 是否合约实现了接口
-    /// @param interfaceID  ERC-165定义的接口id
-    /// @dev 函数要少于  30,000 gas.
-    /// @return 合约实现了 `interfaceID`（不为  0xffffffff）返回`true` ， 否则false.
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
-}
-
-// File: @openzeppelin/contracts/token/ERC721/IERC721.sol
-
-pragma solidity ^0.5.0;
-
-
-/**
- * @dev Required interface of an ERC721 compliant contract.
- * 遵从 ERC721 合约
- */
-contract IERC721 is IERC165 {
-
-    /// @dev 当任何NFT的所有权更改时（不管哪种方式），就会触发此事件。
-    ///  包括在创建时（`from` == 0）和销毁时(`to` == 0), 合约创建时除外。
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-
-    /// @dev 当更改或确认NFT的授权地址时触发。
-    ///  零地址表示没有授权的地址。
-    ///  发生 `Transfer` 事件时，同样表示该NFT的授权地址（如果有）被重置为“无”（零地址）。
-    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
-
-    /// @dev 所有者启用或禁用操作员时触发。（操作员可管理所有者所持有的NFTs）
-    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
-
-    /// @notice 统计所持有的NFTs数量
-    /// @dev NFT 不能分配给零地址，查询零地址同样会异常
-    /// @param owner ： 待查地址
-    /// @return 返回数量，也许是0
-    function balanceOf(address owner) public view returns (uint256 balance);
-
-    /// @notice 返回所有者
-    /// @dev NFT 不能分配给零地址，查询零地址抛出异常
-    /// @param tokenId NFT 的id
-    /// @return 返回所有者地址
-    function ownerOf(uint256 tokenId) public view returns (address owner);
-
-    /// @notice 将NFT的所有权从一个地址转移到另一个地址
-    /// @dev 如果`msg.sender` 不是当前的所有者（或授权者）抛出异常
-    /// 如果 `_from` 不是所有者、`_to` 是零地址、`_tokenId` 不是有效id 均抛出异常。
-    ///  当转移完成时，函数检查  `_to` 是否是合约，如果是，调用 `_to`的 `onERC721Received` 并且检查返回值是否是 `0x150b7a02` (即：`bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`)  如果不是抛出异常。
-    /// @param _from ：当前的所有者
-    /// @param _to ：新的所有者
-    /// @param _tokenId ：要转移的token id.
-    /// @param data : 附加额外的参数（没有指定格式），传递给接收者。
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
-
-    /// @notice 将NFT的所有权从一个地址转移到另一个地址，功能同上，不带data参数。
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
-
-    /// @notice 转移所有权 -- 调用者负责确认`_to`是否有能力接收NFTs，否则可能永久丢失。
-    /// @dev 如果`msg.sender` 不是当前的所有者（或授权者、操作员）抛出异常
-    /// 如果 `_from` 不是所有者、`_to` 是零地址、`_tokenId` 不是有效id 均抛出异常。
-    function transferFrom(address from, address to, uint256 tokenId) public;
-
-    /// @notice 更改或确认NFT的授权地址
-    /// @dev 零地址表示没有授权的地址。
-    ///  如果`msg.sender` 不是当前的所有者或操作员
-    /// @param _approved 新授权的控制者
-    /// @param _tokenId ： token id
-    function approve(address to, uint256 tokenId) public;
-
-    /// @notice 获取单个NFT的授权地址
-    /// @dev 如果 `_tokenId` 无效，抛出异常。
-    /// @param _tokenId ：  token id
-    /// @return 返回授权地址， 零地址表示没有。
-    function getApproved(uint256 tokenId) public view returns (address operator);
-
-    /// @notice 启用或禁用第三方（操作员）管理 `msg.sender` 所有资产
-    /// @dev 触发 ApprovalForAll 事件，合约必须允许每个所有者可以有多个操作员。
-    /// @param _operator 要添加到授权操作员列表中的地址
-    /// @param _approved True 表示授权, false 表示撤销
-    function setApprovalForAll(address operator, bool _approved) public;
-
-    /// @notice 查询一个地址是否是另一个地址的授权操作员
-    /// @param _owner 所有者
-    /// @param _operator 代表所有者的授权操作员
-    function isApprovedForAll(address owner, address operator) public view returns (bool);
-}
-
-// File: @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol
-
-pragma solidity ^0.5.0;
-
-/**
- * @title ERC721 token receiver interface
- * @dev Interface for any contract that wants to support safeTransfers
- * from ERC721 asset contracts.
- * ERC721 接收接口
- */
-contract IERC721Receiver {
-    /// @notice 处理接收NFT
-    /// @dev ERC721智能合约在`transfer`完成后，在接收这地址上调用这个函数。
-    /// 函数可以通过revert 拒绝接收。返回非`0x150b7a02` 也同样是拒绝接收。
-    /// 注意: 调用这个函数的 msg.sender是ERC721的合约地址
-    /// @param _operator ：调用 `safeTransferFrom` 函数的地址。
-    /// @param _from ：之前的NFT拥有者
-    /// @param _tokenId ： NFT token id
-    /// @param _data ： 附加信息
-    /// @return 正确处理时返回 `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
-    function onERC721Received(address operator, address from, uint256 tokenId, bytes memory data)
-    public returns (bytes4);
-}
-
-// File: @openzeppelin/contracts/math/SafeMath.sol
-
-pragma solidity ^0.5.0;
-
-/*
- * 安全计算库
- */
+// 安全计算库
 library SafeMath {
 
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
@@ -219,6 +38,7 @@ library SafeMath {
     }
 
     function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+
         require(b > 0, errorMessage);
         uint256 c = a / b;
 
@@ -235,19 +55,17 @@ library SafeMath {
     }
 }
 
-// File: @openzeppelin/contracts/utils/Address.sol
-
 pragma solidity ^0.5.5;
 
-/*
- * 收集地址类型库
- */
+// 收集地址类型库
 library Address {
 
     function isContract(address account) internal view returns (bool) {
+
         bytes32 codehash;
         bytes32 accountHash = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
-        // solhint-disable-next-line no-inline-assembly
+
+        // 不能使用solhint，否则会提示错误
         assembly { codehash := extcodehash(account) }
         return (codehash != accountHash && codehash != 0x0);
     }
@@ -259,35 +77,19 @@ library Address {
     function sendValue(address payable recipient, uint256 amount) internal {
         require(address(this).balance >= amount, "Address: insufficient balance");
 
-        // solhint-disable-next-line avoid-call-value
+        // 不能使用solhint，否则会提示错误
         (bool success, ) = recipient.call.value(amount)("");
         require(success, "Address: unable to send value, recipient may have reverted");
     }
 }
 
-// File: @openzeppelin/contracts/drafts/Counters.sol
-
 pragma solidity ^0.5.0;
 
-
-/**
- * @title Counters
- * @author Matt Condon (@shrugs)
- * @dev Provides counters that can only be incremented or decremented by one. This can be used e.g. to track the number
- * of elements in a mapping, issuing ERC721 ids, or counting request ids.
- *
- * Include with `using Counters for Counters.Counter;`
- * Since it is not possible to overflow a 256 bit integer with increments of one, `increment` can skip the {SafeMath}
- * overflow check, thereby saving gas. This does assume however correct usage, in that the underlying `_value` is never
- * directly accessed.
- */
+// 计数器
 library Counters {
     using SafeMath for uint256;
 
     struct Counter {
-        // This variable should never be directly accessed by users of the library: interactions must be restricted to
-        // the library's function. As of Solidity v0.5.2, this cannot be enforced, though there is a proposal to add
-        // this feature: see https://github.com/ethereum/solidity/issues/4637
         uint256 _value; // default: 0
     }
 
@@ -296,7 +98,6 @@ library Counters {
     }
 
     function increment(Counter storage counter) internal {
-        // The {SafeMath} overflow check can be skipped here, see the comment at the top
         counter._value += 1;
     }
 
@@ -305,10 +106,161 @@ library Counters {
     }
 }
 
-// File: @openzeppelin/contracts/introspection/ERC165.sol
+pragma solidity ^0.5.0;
+
+/**
+ * @dev Provides information about the current execution context, including the
+ * sender of the transaction and its data. While these are generally available
+ * via msg.sender and msg.data, they should not be accessed in such a direct
+ * manner, since when dealing with GSN meta-transactions the account sending and
+ * paying for execution may not be the actual sender (as far as an application
+ * is concerned).
+ *
+ * This contract is only required for intermediate, library-like contracts.
+ * 这个合约仅用来要求中间的、链接库合约
+ */
+contract Context {
+
+    // Empty internal constructor, to prevent people from mistakenly deploying
+    // an instance of this contract, which should be used via inheritance.
+    constructor () internal { }
+    // solhint-disable-previous-line no-empty-blocks
+
+    function _msgSender() internal view returns (address payable) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view returns (bytes memory) {
+        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
+        return msg.data;
+    }
+}
 
 pragma solidity ^0.5.0;
 
+interface IERC165 {
+    
+    /// @notice 是否合约实现了接口
+    /// @param interfaceId  ERC-165定义的接口id
+    /// @dev 函数要少于  30,000 gas.
+    /// @return 合约实现了 `interfaceId`（不为  0xffffffff）返回`true` ， 否则false.
+    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+}
+
+pragma solidity ^0.5.0;
+
+//遵从ERC721合约
+contract IERC721 is IERC165 {
+
+    /// @dev 当任何NFT的所有权更改时（不管哪种方式），就会触发此事件。
+    ///  包括在创建时（`from` == 0）和销毁时(`to` == 0), 合约创建时除外。
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+
+    /// @dev 当更改或确认NFT的授权地址时触发。
+    ///  零地址表示没有授权的地址。
+    ///  发生 `Transfer` 事件时，同样表示该NFT的授权地址（如果有）被重置为“无”（零地址）。
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+
+    /// @dev 所有者启用或禁用操作员时触发。（操作员可管理所有者所持有的NFTs）
+    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+
+    /// @notice 统计所持有的NFTs数量
+    /// @dev NFT 不能分配给零地址，查询零地址同样会异常
+    /// @param owner ： 待查地址
+    /// @return 返回数量，也许是0
+    function balanceOf(address owner) public view returns (uint256 balance);
+
+    /// @notice 返回所有者
+    /// @dev NFT 不能分配给零地址，查询零地址抛出异常
+    /// @param tokenId NFT 的id
+    /// @return 返回所有者地址
+    function ownerOf(uint256 tokenId) public view returns (address owner);
+
+    /// @notice 将NFT的所有权从一个地址转移到另一个地址
+    /// @dev 如果`msg.sender` 不是当前的所有者（或授权者）抛出异常
+    /// 如果 `from` 不是所有者、`to` 是零地址、`tokenId` 不是有效id 均抛出异常。
+    /// 当转移完成时，函数检查  `to` 是否是合约，如果是，调用 `to`的 `onERC721Received` 并且检查返回值是否是 `0x150b7a02`
+    /// (即：`bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`)  如果不是抛出异常
+    /// @param from ：当前的所有者
+    /// @param to ：新的所有者
+    /// @param tokenId ：要转移的token id.
+    /// @param data : 附加额外的参数（没有指定格式），传递给接收者。
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+
+    /// @notice 将NFT的所有权从一个地址转移到另一个地址，功能同上，不带data参数。
+    function safeTransferFrom(address from, address to, uint256 tokenId) public;
+
+    /// @notice 转移所有权 -- 调用者负责确认`to`是否有能力接收NFTs，否则可能永久丢失。
+    /// @dev 如果`msg.sender` 不是当前的所有者（或授权者、操作员）抛出异常
+    /// 如果 `from` 不是所有者、`to` 是零地址、`tokenId` 不是有效id 均抛出异常。
+    function transferFrom(address from, address to, uint256 tokenId) public;
+
+    /// @notice 更改或确认NFT的授权地址
+    /// @dev 零地址表示没有授权的地址。
+    ///  如果`msg.sender` 不是当前的所有者或操作员
+    /// @param tokenId ： token id
+    function approve(address to, uint256 tokenId) public;
+
+    /// @notice 获取单个NFT的授权地址
+    /// @dev 如果 `tokenId` 无效，抛出异常。
+    /// @param tokenId ：  token id
+    /// @return 返回授权地址， 零地址表示没有。
+    function getApproved(uint256 tokenId) public view returns (address operator);
+
+    /// @notice 启用或禁用第三方（操作员）管理 `msg.sender` 所有资产
+    /// @dev 触发 ApprovalForAll 事件，合约必须允许每个所有者可以有多个操作员。
+    /// @param operator 要添加到授权操作员列表中的地址
+    /// @param _approved True 表示授权, false 表示撤销
+    function setApprovalForAll(address operator, bool _approved) public;
+
+    /// @notice 查询一个地址是否是另一个地址的授权操作员
+    /// @param owner 所有者
+    /// @param operator 代表所有者的授权操作员
+    function isApprovedForAll(address owner, address operator) public view returns (bool);
+}
+
+pragma solidity ^0.5.0;
+
+library MathwalletUtil {
+    function uintToString(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len - 1;
+        while (_i != 0) {
+            bstr[k--] = byte(uint8(48 + _i % 10));
+            _i /= 10;
+        }
+        return string(bstr);
+    }
+}
+
+pragma solidity ^0.5.0;
+
+//ERC721 接收接口
+contract IERC721Receiver {
+
+    /// @notice 处理接收NFT
+    /// @dev ERC721智能合约在`transfer`完成后，在接收这地址上调用这个函数。
+    /// 函数可以通过revert 拒绝接收。返回非`0x150b7a02` 也同样是拒绝接收。
+    /// 注意: 调用这个函数的 msg.sender是ERC721的合约地址
+    /// @param operator ：调用 `safeTransferFrom` 函数的地址。
+    /// @param from ：之前的NFT拥有者
+    /// @param tokenId ： NFT token id
+    /// @param data ： 附加信息
+    /// @return 正确处理时返回 `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
+    function onERC721Received(address operator, address from, uint256 tokenId, bytes memory data)
+    public returns (bytes4);
+}
+
+pragma solidity ^0.5.0;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -318,6 +270,7 @@ pragma solidity ^0.5.0;
  * 合约可以继承自｛_registerInterface｝从而声明对一个接口的支持
  */
 contract ERC165 is IERC165 {
+
     /*
      * bytes4(keccak256('supportsInterface(bytes4)')) == 0x01ffc9a7
      */
@@ -329,16 +282,13 @@ contract ERC165 is IERC165 {
     mapping(bytes4 => bool) private _supportedInterfaces;
 
     constructor () internal {
-        // Derived contracts need only register support for their own interfaces,
-        // we register support for ERC165 itself here
         _registerInterface(_INTERFACE_ID_ERC165);
     }
 
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     *
-     * Time complexity O(1), guaranteed to always use less than 30 000 gas.
-     */
+    /// @notice 是否合约实现了接口
+    /// @param interfaceId  ERC-165定义的接口id
+    /// @dev 函数要少于  30,000 gas.
+    /// @return 合约实现了 `interfaceId`（不为  0xffffffff）返回`true` ， 否则false.
     function supportsInterface(bytes4 interfaceId) external view returns (bool) {
         return _supportedInterfaces[interfaceId];
     }
@@ -360,16 +310,10 @@ contract ERC165 is IERC165 {
     }
 }
 
-// File: @openzeppelin/contracts/token/ERC721/ERC721.sol
-
 pragma solidity ^0.5.0;
 
-
-/**
- * @title ERC721 Non-Fungible Token Standard basic implementation
- * @dev see https://eips.ethereum.org/EIPS/eip-721
- */
 contract ERC721 is Context, ERC165, IERC721 {
+
     using SafeMath for uint256;
     using Address for address;
     using Counters for Counters.Counter;
@@ -412,22 +356,24 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Gets the balance of the specified address.
-     * @param owner address to query the balance of
-     * @return uint256 representing the amount owned by the passed address
+     * @dev 获取指定账号的余额
+     * @param owner 要查询余额的账号
+     * @return uint256 返回账号所拥有的余额
      */
     function balanceOf(address owner) public view returns (uint256) {
+
         require(owner != address(0), "ERC721: balance query for the zero address");
 
         return _ownedTokensCount[owner].current();
     }
 
     /**
-     * @dev Gets the owner of the specified token ID.
-     * @param tokenId uint256 ID of the token to query the owner of
-     * @return address currently marked as the owner of the given token ID
+     * @dev 得到 token ID的所有者
+     * @param tokenId 需要查询的token ID
+     * @return address 当前token ID的所有者
      */
     function ownerOf(uint256 tokenId) public view returns (address) {
+
         address owner = _tokenOwner[tokenId];
         require(owner != address(0), "ERC721: owner query for nonexistent token");
 
@@ -443,6 +389,7 @@ contract ERC721 is Context, ERC165, IERC721 {
      * @param tokenId uint256 ID of the token to be approved
      */
     function approve(address to, uint256 tokenId) public {
+
         address owner = ownerOf(tokenId);
         require(to != owner, "ERC721: approval to current owner");
 
@@ -461,6 +408,7 @@ contract ERC721 is Context, ERC165, IERC721 {
      * @return address currently approved for the given token ID
      */
     function getApproved(uint256 tokenId) public view returns (address) {
+
         require(_exists(tokenId), "ERC721: approved query for nonexistent token");
 
         return _tokenApprovals[tokenId];
@@ -473,6 +421,7 @@ contract ERC721 is Context, ERC165, IERC721 {
      * @param approved representing the status of the approval to be set
      */
     function setApprovalForAll(address to, bool approved) public {
+
         require(to != _msgSender(), "ERC721: approve to caller");
 
         _operatorApprovals[_msgSender()][to] = approved;
@@ -532,6 +481,7 @@ contract ERC721 is Context, ERC165, IERC721 {
      * @param _data bytes data to send along with a safe transfer check
      */
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public {
+        
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
         _safeTransferFrom(from, to, tokenId, _data);
     }
@@ -554,9 +504,9 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Returns whether the specified token exists.
-     * @param tokenId uint256 ID of the token to query the existence of
-     * @return bool whether the token exists
+     * @dev 返回指定的token ID 是否存在
+     * @param tokenId 
+     * @return bool 返回是否存在指定的 token ID
      */
     function _exists(uint256 tokenId) internal view returns (bool) {
         address owner = _tokenOwner[tokenId];
@@ -564,11 +514,10 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Returns whether the given spender can transfer a given token ID.
-     * @param spender address of the spender to query
-     * @param tokenId uint256 ID of the token to be transferred
-     * @return bool whether the msg.sender is approved for the given token ID,
-     * is an operator of the owner, or is the owner of the token
+     * @dev 查询指定的账号是否具有对应token ID 的权限
+     * @param spender 需要查询的账号
+     * @param tokenId 需要查询的token ID
+     * @return bool 此账号是否具有对应的 token ID 的权限
      */
     function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool) {
         require(_exists(tokenId), "ERC721: operator query for nonexistent token");
@@ -577,23 +526,19 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Internal function to safely mint a new token.
-     * Reverts if the given token ID already exists.
-     * If the target address is a contract, it must implement `onERC721Received`,
-     * which is called upon a safe transfer, and return the magic value
-     * `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`; otherwise,
-     * the transfer is reverted.
-     * @param to The address that will own the minted token
-     * @param tokenId uint256 ID of the token to be minted
+     * @dev 安全铸造新 token ID的内部函数
+     * 如果所铸造的token ID存在，则还原，如果为合约地址则必须实现 onERC721Received 
+     * 在安全 transfer 时调用，并返回值 `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`; 否则还原
+     * @param to 需要铸造新token ID的所有者
+     * @param tokenId 铸造新的token ID
      */
     function _safeMint(address to, uint256 tokenId) internal {
         _safeMint(to, tokenId, "");
     }
 
     /**
-     * @dev Internal function to safely mint a new token.
-     * Reverts if the given token ID already exists.
-     * If the target address is a contract, it must implement `onERC721Received`,
+     * @dev 内部函数，安全铸币，如果此token ID已经存在，则返回。
+     * 如果to 是一个合约地址，则它必须是 onERC721Received
      * which is called upon a safe transfer, and return the magic value
      * `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`; otherwise,
      * the transfer is reverted.
@@ -607,12 +552,12 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Internal function to mint a new token.
-     * Reverts if the given token ID already exists.
-     * @param to The address that will own the minted token
-     * @param tokenId uint256 ID of the token to be minted
+     * @dev 内部函数 铸币，如果此token ID已经存在，则返回
+     * @param to 新币的所有者
+     * @param tokenId 新币的token ID
      */
     function _mint(address to, uint256 tokenId) internal {
+
         require(to != address(0), "ERC721: mint to the zero address");
         require(!_exists(tokenId), "ERC721: token already minted");
 
@@ -623,11 +568,9 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Internal function to burn a specific token.
-     * Reverts if the token does not exist.
-     * Deprecated, use {_burn} instead.
-     * @param owner owner of the token to burn
-     * @param tokenId uint256 ID of the token being burned
+     * @dev 删除一个指定的token ID 使用 _burn 来说来进行替代
+     * @param owner 
+     * @param tokenId 
      */
     function _burn(address owner, uint256 tokenId) internal {
         require(ownerOf(tokenId) == owner, "ERC721: burn of token that is not own");
@@ -641,20 +584,18 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Internal function to burn a specific token.
-     * Reverts if the token does not exist.
-     * @param tokenId uint256 ID of the token being burned
+     * @dev 从所有者中删除一个token ID，如果不存在，则回滚
+     * @param tokenId 需要删除的token ID
      */
     function _burn(uint256 tokenId) internal {
         _burn(ownerOf(tokenId), tokenId);
     }
 
     /**
-     * @dev Internal function to transfer ownership of a given token ID to another address.
-     * As opposed to {transferFrom}, this imposes no restrictions on msg.sender.
-     * @param from current owner of the token
-     * @param to address to receive the ownership of the given token ID
-     * @param tokenId uint256 ID of the token to be transferred
+     * @dev 内部函数，将token ID从一个账号转移到另一个账号 与 transferFrom 不同的是对msg.sender没有限制
+     * @param from 当前token ID的所有者
+     * @param to 转移接收token ID的用户
+     * @param tokenId 转移的token ID
      */
     function _transferFrom(address from, address to, uint256 tokenId) internal {
         require(ownerOf(tokenId) == from, "ERC721: transfer of token that is not own");
@@ -671,7 +612,7 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Internal function to invoke {IERC721Receiver-onERC721Received} on a target address.
+     * @dev 内部函数 Internal function to invoke {IERC721Receiver-onERC721Received} on a target address.
      * The call is not executed if the target address is not a contract.
      *
      * This is an internal detail of the `ERC721` contract and its use is deprecated.
@@ -712,8 +653,8 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 
     /**
-     * @dev Private function to clear current approval of a given token ID.
-     * @param tokenId uint256 ID of the token to be transferred
+     * @dev 私有函数，清空一个tokenID的信息
+     * @param tokenId 需要被清空的token ID
      */
     function _clearApproval(uint256 tokenId) private {
         if (_tokenApprovals[tokenId] != address(0)) {
@@ -722,15 +663,9 @@ contract ERC721 is Context, ERC165, IERC721 {
     }
 }
 
-// File: @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol
-
 pragma solidity ^0.5.0;
 
-
-/**
- * 枚举接口:
- * 枚举接口包含了按索引获取到对应的代币，可以提供NFTs的完整列表，以便NFT可被发现。
- */
+//枚举接口包含了按索引获取到对应的代币，可以提供NFTs的完整列表，以便NFT可被发现。
 contract IERC721Enumerable is IERC721 {
 
     /// @notice  NFTs 计数
@@ -738,26 +673,20 @@ contract IERC721Enumerable is IERC721 {
     function totalSupply() public view returns (uint256);
 
     /// @notice 枚举索引NFT
-    /// @dev 如果 `_index` >= `totalSupply()` 则抛出异常
-    /// @param _index 小于 `totalSupply()`的索引号
+    /// @dev 如果 `index` >= `totalSupply()` 则抛出异常
+    /// @param index 小于 `totalSupply()`的索引号
     /// @return 对应的token id（标准不指定排序方式)
     function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256 tokenId);
 
     /// @notice 枚举索引某个所有者的 NFTs
-    /// @dev  如果 `_index` >= `balanceOf(_owner)` 或 `_owner` 是零地址，抛出异常
-    /// @param _owner 查询的所有者地址
-    /// @param _index 小于 `balanceOf(_owner)` 的索引号
+    /// @param index 小于 `balanceOf(_owner)` 的索引号
     /// @return 对应的token id （标准不指定排序方式)
     function tokenByIndex(uint256 index) public view returns (uint256);
 }
 
-// File: @openzeppelin/contracts/token/ERC721/ERC721Enumerable.sol
-
 pragma solidity ^0.5.0;
 
-/*
-* 继承ERC721、ERC165和枚举接口的合约
-*/
+//继承ERC721、ERC165和枚举接口的合约
 contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
     // Mapping from owner to list of owned token IDs
     mapping(address => uint256[]) private _ownedTokens;
@@ -784,12 +713,13 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
      * @dev Constructor function.
      */
     constructor () public {
-        // register the supported interface to conform to ERC721Enumerable via ERC165
+
+        // 通过ERC165注册支持的接口以符合ERC721Enumerable
         _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
     }
 
     /**
-     * @dev Gets the token ID at a given index of the tokens list of the requested owner.
+     * @dev 获取请求者给定的 index 的 token ID
      * @param owner address owning the tokens list to be accessed
      * @param index uint256 representing the index to be accessed of the requested tokens list
      * @return uint256 token ID at the given index of the tokens list owned by the requested address
@@ -800,16 +730,15 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
     }
 
     /**
-     * @dev Gets the total amount of tokens stored by the contract.
-     * @return uint256 representing the total amount of tokens
+     * @dev 获取存储的token ID的总数
+     * @return uint256 
      */
     function totalSupply() public view returns (uint256) {
         return _allTokens.length;
     }
 
     /**
-     * @dev Gets the token ID at a given index of all the tokens in this contract
-     * Reverts if the index is greater or equal to the total number of tokens.
+     * @dev 根据序号获取合约中所有的token ID，如果index大于或者等于总数量则reverts
      * @param index uint256 representing the index to be accessed of the tokens list
      * @return uint256 token ID at the given index of the tokens list
      */
@@ -819,11 +748,10 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
     }
 
     /**
-     * @dev Internal function to transfer ownership of a given token ID to another address.
-     * As opposed to transferFrom, this imposes no restrictions on msg.sender.
-     * @param from current owner of the token
-     * @param to address to receive the ownership of the given token ID
-     * @param tokenId uint256 ID of the token to be transferred
+     * @dev 将token ID从 from 转移到 to 用户中
+     * @param from 当前拥有token ID的用户
+     * @param to 接收token ID的用户
+     * @param tokenId 需要转移的token ID
      */
     function _transferFrom(address from, address to, uint256 tokenId) internal {
         super._transferFrom(from, to, tokenId);
@@ -834,10 +762,9 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
     }
 
     /**
-     * @dev Internal function to mint a new token.
-     * Reverts if the given token ID already exists.
-     * @param to address the beneficiary that will own the minted token
-     * @param tokenId uint256 ID of the token to be minted
+     * @dev 铸币 如果 token ID已经存在，则返回
+     * @param to 铸币后，token ID的所有者
+     * @param tokenId 铸币的token ID
      */
     function _mint(address to, uint256 tokenId) internal {
         super._mint(to, tokenId);
@@ -865,9 +792,9 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
     }
 
     /**
-     * @dev Gets the list of token IDs of the requested owner.
-     * @param owner address owning the tokens
-     * @return uint256[] List of token IDs owned by the requested address
+     * @dev 获取指定用户的token ID列表
+     * @param owner 用户
+     * @return uint256[] token ID 列表
      */
     function _tokensOfOwner(address owner) internal view returns (uint256[] storage) {
         return _ownedTokens[owner];
@@ -893,7 +820,7 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
     }
 
     /**
-     * @dev Private function to remove a token from this extension's ownership-tracking data structures. Note that
+     * @dev 私有函数从扩展的所有权数据中删除一个token
      * while the token is not assigned a new owner, the `_ownedTokensIndex` mapping is _not_ updated: this allows for
      * gas optimizations e.g. when performing a transfer operation (avoiding double writes).
      * This has O(1) time complexity, but alters the order of the _ownedTokens array.
@@ -953,10 +880,7 @@ contract ERC721Enumerable is Context, ERC165, ERC721, IERC721Enumerable {
 pragma solidity ^0.5.0;
 
 
-/*
-* 元数据接口:
-* 元数据包括一个名称和符号，就像它许多其他代币标准中一样（如ERC-20）。 此外，还可以为一个代币定义tokenURI ， 每个代币都应该有自己的URI。
-*/
+//元数据包括一个名称和符号，就像它许多其他代币标准中一样（如ERC-20）。 此外，还可以为一个代币定义tokenURI ， 每个代币都应该有自己的URI。
 contract IERC721Metadata is IERC721 {
 
     /// @notice NFTs 集合的名字
@@ -970,8 +894,6 @@ contract IERC721Metadata is IERC721 {
     /// URI 也许指向一个 符合 "ERC721 元数据 JSON Schema" 的 JSON 文件
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
-
-// File: @openzeppelin/contracts/token/ERC721/ERC721Metadata.sol
 
 pragma solidity ^0.5.0;
 
@@ -997,9 +919,6 @@ contract ERC721Metadata is Context, ERC165, ERC721, IERC721Metadata {
      */
     bytes4 private constant _INTERFACE_ID_ERC721_METADATA = 0x5b5e139f;
 
-    /**
-     * @dev Constructor function
-     */
     constructor (string memory name, string memory symbol) public {
         _name = name;
         _symbol = symbol;
@@ -1008,30 +927,17 @@ contract ERC721Metadata is Context, ERC165, ERC721, IERC721Metadata {
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
     }
 
-    /**
-     * @dev Gets the token name.
-     * @return string representing the token name
-     */
+    //查询得到token的名称
     function name() external view returns (string memory) {
         return _name;
     }
 
-    /**
-     * @dev Gets the token symbol.
-     * @return string representing the token symbol
-     */
+    //得到token的标识符
     function symbol() external view returns (string memory) {
         return _symbol;
     }
 
-    /**
-     * @dev Returns the URI for a given token ID. May return an empty string.
-     *
-     * If the token's URI is non-empty and a base URI was set (via
-     * {_setBaseURI}), it will be added to the token ID's URI as a prefix.
-     *
-     * Reverts if the token ID does not exist.
-     */
+    //返回token Id 的URI地址，有可能为一个空值。
     function tokenURI(uint256 tokenId) external view returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
@@ -1046,15 +952,7 @@ contract ERC721Metadata is Context, ERC165, ERC721, IERC721Metadata {
         }
     }
 
-    /**
-     * @dev Internal function to set the token URI for a given token.
-     *
-     * Reverts if the token ID does not exist.
-     *
-     * TIP: if all token IDs share a prefix (e.g. if your URIs look like
-     * `http://api.myproject.com/token/<id>`), use {_setBaseURI} to store
-     * it and save gas.
-     */
+    //设置token ID的URI，如果token ID不存在则Reverts
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal {
         require(_exists(tokenId), "ERC721Metadata: URI set of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
@@ -1071,7 +969,7 @@ contract ERC721Metadata is Context, ERC165, ERC721, IERC721Metadata {
     }
 
     /**
-    * @dev Returns the base URI set via {_setBaseURI}. This will be
+    * @dev 返回base URI Returns the base URI set via {_setBaseURI}. This will be
     * automatically added as a preffix in {tokenURI} to each token's URI, when
     * they are non-empty.
     *
@@ -1098,27 +996,13 @@ contract ERC721Metadata is Context, ERC165, ERC721, IERC721Metadata {
     }
 }
 
-// File: @openzeppelin/contracts/token/ERC721/ERC721Full.sol
-
 pragma solidity ^0.5.0;
 
-
-
-
-/**
- * @title Full ERC721 Token
- * @dev This implementation includes all the required and some optional functionality of the ERC721 standard
- * Moreover, it includes approve all functionality using operator terminology.
- *
- * See https://eips.ethereum.org/EIPS/eip-721
- */
 contract ERC721Full is ERC721, ERC721Enumerable, ERC721Metadata {
     constructor (string memory name, string memory symbol) public ERC721Metadata(name, symbol) {
         // solhint-disable-previous-line no-empty-blocks
     }
 }
-
-// File: contracts/library/Governance.sol
 
 pragma solidity ^0.5.0;
 
@@ -1147,49 +1031,17 @@ contract Governance {
 
 }
 
-// File: contracts/library/MathwalletUtil.sol
-
-pragma solidity ^0.5.0;
-
-
-library MathwalletUtil {
-    function uintToString(uint _i) internal pure returns (string memory _uintAsString) {
-        if (_i == 0) {
-            return "0";
-        }
-        uint j = _i;
-        uint len;
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint k = len - 1;
-        while (_i != 0) {
-            bstr[k--] = byte(uint8(48 + _i % 10));
-            _i /= 10;
-        }
-        return string(bstr);
-    }
-}
-
-// File: contracts/nft/MathCon2Token.sol
-
 pragma solidity ^0.5.5;
 
-
-
-
 contract NFTToken is ERC721Full, Governance {
+
     // for minters
     mapping(address => bool) public _minters;
 
-
-
-    constructor() public ERC721Full("NAME", "SYMBOL") {
+    //设置NFT的Token名称、标识符以及URI 
+    constructor() public ERC721Full("Tina", "TAB") {
         _setBaseURI("https://BASEURI");
     }
-
 
     function setURIPrefix(string memory baseURI) internal {
         _setBaseURI(baseURI);
@@ -1197,9 +1049,9 @@ contract NFTToken is ERC721Full, Governance {
 
 
     /**
-     * @dev Function to mint tokens.
-     * @param to The address that will receive the minted token.
-     * @param tokenId The token id to mint.
+     * @dev 铸币 token ID
+     * @param to 接收铸造token ID 的用户
+     * @param tokenId 铸造的token ID
      * @return A boolean that indicates if the operation was successful.
      */
     function mint(address to, uint256 tokenId) external returns (bool) {
@@ -1210,9 +1062,9 @@ contract NFTToken is ERC721Full, Governance {
     }
 
     /**
-     * @dev Function to safely mint tokens.
-     * @param to The address that will receive the minted token.
-     * @param tokenId The token id to mint.
+     * @dev 安全铸造token函数
+     * @param to 接收铸造token的用户
+     * @param tokenId 铸造的token ID
      * @return A boolean that indicates if the operation was successful.
      */
     function safeMint(address to, uint256 tokenId) public returns (bool) {
@@ -1223,11 +1075,11 @@ contract NFTToken is ERC721Full, Governance {
     }
 
     /**
-     * @dev Function to safely mint tokens.
-     * @param to The address that will receive the minted token.
-     * @param tokenId The token id to mint.
-     * @param _data bytes data to send along with a safe transfer check.
-     * @return A boolean that indicates if the operation was successful.
+     * @dev 安全铸币
+     * @param to 接收铸币的用户
+     * @param tokenId 铸币的token ID
+     * @param _data 外带数据
+     * @return 操作是否成功
      */
     function safeMint(
         address to,
@@ -1249,8 +1101,8 @@ contract NFTToken is ERC721Full, Governance {
     }
 
     /**
-     * @dev Burns a specific ERC721 token.
-     * @param tokenId uint256 id of the ERC721 token to be burned.
+     * @dev 删除指定的token ID
+     * @param tokenId 
      */
     function burn(uint256 tokenId) external {
         //solhint-disable-next-line max-line-length
@@ -1264,13 +1116,11 @@ contract NFTToken is ERC721Full, Governance {
 
 
     /**
-     * @dev Gets the list of token IDs of the requested owner.
-     * @param owner address owning the tokens
-     * @return uint256[] List of token IDs owned by the requested address
+     * @dev 得到指定用户的token ID列表
+     * @param owner 
+     * @return uint256[] 
      */
     function tokensOfOwner(address owner) public view returns (uint256[] memory) {
         return _tokensOfOwner(owner);
     }
-
-
 }

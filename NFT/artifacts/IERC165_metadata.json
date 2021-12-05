@@ -1,0 +1,68 @@
+{
+	"compiler": {
+		"version": "0.5.5+commit.47a71e8f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "interfaceId",
+						"type": "bytes4"
+					}
+				],
+				"name": "supportsInterface",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"supportsInterface(bytes4)": {
+					"details": "函数要少于  30,000 gas.",
+					"params": {
+						"interfaceId": "ERC-165定义的接口id"
+					},
+					"return": "合约实现了 `interfaceId`（不为  0xffffffff）返回`true` ， 否则false."
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {
+				"supportsInterface(bytes4)": {
+					"notice": "是否合约实现了接口"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"NFT.sol": "IERC165"
+		},
+		"evmVersion": "petersburg",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"NFT.sol": {
+			"keccak256": "0x6ccd1b91a03e97cb2801675d60d7a4cabebee1c171e7b8c4ab7528ca4d98cc62",
+			"urls": [
+				"bzzr://a015f018bb0ae9ebf63832704d4bd82246c545dd4c3dd7b178dc5846d54a8b00"
+			]
+		}
+	},
+	"version": 1
+}
