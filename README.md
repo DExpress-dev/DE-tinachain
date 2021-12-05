@@ -59,15 +59,15 @@ The Tina chain adopts a POSt method similar to the space-time proof. During the 
 
 ### 目录（Folders）
 
-#### [chain](https://github.com/Tinachain/Tina/tree/master/chain)
+#### [chain](https://github.com/DExpress-dev/DE-tinachain/tree/master/chain)
     采用DPOS共识实现的基础链代码（基于ethereum 1.7.4版本）
     Main chain code, implementing DPOS.
 
-#### [contracts](https://github.com/Tinachain/Tina/tree/master/contracts)
+#### [contracts](https://github.com/DExpress-dev/DE-tinachain/tree/master/contracts)
     采用Solidity编写的基础合约代码
     Basic contract code in solidity.
 
-#### [explorer](https://github.com/Tinachain/Tina/tree/master/explorer)
+#### [explorer](https://github.com/DExpress-dev/DE-tinachain/tree/master/explorer)
     区块链浏览器以及文章上传页面代码
     Basic contract code in solidity.
 
