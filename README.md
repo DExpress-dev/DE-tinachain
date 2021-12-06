@@ -57,6 +57,10 @@ The Tina chain adopts a POSt method similar to the space-time proof. During the 
 ### Tina链组织图（System Organization chart）
 ![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/combination.png)
 
+### Tina链微信小程序截图（Screenshot of Tina chain wechat applet）
+![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Mini_Programs1.jpg)
+![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Mini_Programs2.jpg)
+
 ### 目录（Folders）
 
 #### [chain](https://github.com/DExpress-dev/DE-tinachain/tree/master/chain)
@@ -70,6 +74,10 @@ The Tina chain adopts a POSt method similar to the space-time proof. During the 
 #### [explorer](https://github.com/DExpress-dev/DE-tinachain/tree/master/explorer)
     区块链浏览器以及文章上传页面代码
     Basic contract code in solidity.
+
+#### [NFT](https://github.com/DExpress-dev/DE-tinachain/tree/main/NFT)
+    NFT相关的合约代码
+    NFT related contract code.
 
 ### 公众号
 ![logo](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/wechat.png)
