@@ -13,6 +13,10 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
 ### Tina链组织图（System Organization chart）
 ![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/combination.png)
 
+### Tina链微信小程序截图（Screenshot of Tina chain wechat applet）
+![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Mini_Programs1.jpg)
+
+![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Mini_Programs2.jpg)
 
 ### 关于我们（About us）
 
@@ -35,6 +39,11 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
 #### [explorer](https://github.com/DExpress-dev/DE-tinachain/tree/master/explorer)
     区块链浏览器以及文章上传页面代码
     Basic contract code in solidity.
+
+#### [NFT](https://github.com/DExpress-dev/DE-tinachain/tree/main/NFT)
+    NFT相关的合约代码
+    NFT related contract code.
+
 
 ### 公众号
 ![logo](https://raw.githubusercontent.com/Tinachain/Tinachain/master/image/wechat.png)
