@@ -47,3 +47,6 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
 
 ### 公众号
 ![logo](https://raw.githubusercontent.com/Tinachain/Tinachain/master/image/wechat.png)
+
+### 小程序
+![logo](https://raw.githubusercontent.com/Tinachain/Tinachain/master/image/Mini_Programs.jpg)
