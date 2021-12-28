@@ -7,10 +7,9 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
 ### Tina链系统架构（System architecture）
 ![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Architecture.png)
 
-### Tina链文件存储流程图（System flow chart）
+### Tina链文件存储流程图（System flow chart）与组织架构图（System Organization chart）
 ![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/process.png)
 
-### Tina链组织图（System Organization chart）
 ![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/combination.png)
 
 ### Tina链微信小程序截图（Screenshot of Tina chain wechat applet）
