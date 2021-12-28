@@ -81,3 +81,6 @@ The Tina chain adopts a POSt method similar to the space-time proof. During the 
 
 ### 公众号
 ![logo](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/wechat.png)
+
+### 小程序
+![logo](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Mini_Programs.jpg)
