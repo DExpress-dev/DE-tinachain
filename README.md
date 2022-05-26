@@ -42,11 +42,6 @@ In order to avoid the hidden danger of storage damage caused by only one copy of
 
 When users obtain complete storage data from the Tina chain, they will first obtain a list of all the slices containing redundant slices, and the obtainer will obtain corresponding slice data from different storage providers based on the information in this slice list. Finally, the complete user data is merged locally by the getter.
 
-#### 时空证明（Time and Space Proof）：
-Tina链采用类似时空证明POSt方式，在整个生命周期内，存储供应商来向需求用户证明切片数据，已经存储到了专属的存储空间中。Tina链采用非交互模式的时空证明方式，自动对存储供应商存储的切片数据发起时空证明验证请求，并由时空证明器自动完成存储供应商的时空证明工作。对于在进行时空证明中发现不履行交易职责的存储供应商，Tina链将自动采取相应的处罚措施进行惩罚。
-
-The Tina chain adopts a POSt method similar to the space-time proof. During the entire life cycle, the storage supplier proves to the demanding user that the sliced data has been stored in the exclusive storage space. The Tina chain adopts the non-interactive mode of spatio-temporal certification, which automatically initiates a spatio-temporal certification verification request for the slice data stored by the storage supplier, and the spatio-temporal prover automatically completes the storage supplier's spatio-temporal certification work.For storage suppliers who are found to have failed to perform transaction duties during the time and space certification, the Tina chain will automatically take corresponding penalties to punish them.
-
 
 ### Tina链系统架构（System architecture）
 ![Image text](https://github.com/DExpress-dev/DE-tinachain/blob/main/Tina/image/Architecture.png)
