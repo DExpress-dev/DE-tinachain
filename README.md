@@ -7,11 +7,6 @@ Tinachain is a vertical blockchain platform specifically designed for preservati
 
 ### Tina链特色（System characteristic）
 
-#### P2P网络（P2P network）：
-Tina链采用了P2P网络模型进行数据传输，在对用户数据进行存储时，Tina链会在需求用户和存储供应商（有时不止一个）中建立起一个P2P网络。利用P2P网络来进行用户数据的传输，从而避免出现由于传输过程而对区块链交易打包速度的影响。
-
-The Tina chain uses a P2P network model for data transmission. When storing user data, the Tina chain will establish a P2P network between the demanding users and storage providers (sometimes more than one). The P2P network is used to transmit user data, so as to avoid the impact of the transmission process on the packaging speed of blockchain transactions.
-
 #### 数据切片（Data slice）：
 Tina链在对需求用户需要存储数据时，为了防止数据块过大，Tina链首先采取了数据切片，将大的存储数据切片成多个更小的数据块（一个数据切片大小为32MB）。
 
